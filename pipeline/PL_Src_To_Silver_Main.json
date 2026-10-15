@@ -76,12 +76,6 @@
 			}
 		},
 		"variables": {
-			"test": {
-				"type": "Array"
-			},
-			"test1": {
-				"type": "Array"
-			},
 			"testtest": {
 				"type": "Integer"
 			}
