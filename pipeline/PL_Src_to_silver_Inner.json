@@ -8,7 +8,7 @@
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
-					"retry": 0,
+					"retry": 2,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
@@ -144,11 +144,11 @@
 					"notebookPath": "/caresync_repo/caresync_adb_repo/Landing_to_bronze",
 					"baseParameters": {
 						"source_system": {
-							"value": "@activity('ReadTableDetails').output.source_system",
+							"value": "@activity('ReadTableDetails').output.firstRow.source_system",
 							"type": "Expression"
 						},
 						"table_name": {
-							"value": "@activity('ReadTableDetails').output.bronze_table_name",
+							"value": "@activity('ReadTableDetails').output.firstRow.bronze_table_name",
 							"type": "Expression"
 						},
 						"landing_timestamp": {
@@ -185,7 +185,7 @@
 					"notebookPath": "/caresync_repo/caresync_adb_repo/bronze to silver",
 					"baseParameters": {
 						"table_name": {
-							"value": "@activity('ReadTableDetails').output.silver_table_name",
+							"value": "@activity('ReadTableDetails').output.firstRow.silver_table_name",
 							"type": "Expression"
 						},
 						"landing_timestamp": {
