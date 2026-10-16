@@ -50,20 +50,61 @@
 					},
 					"activities": [
 						{
-							"name": "Set variable1",
-							"type": "SetVariable",
-							"dependsOn": [],
+							"name": "ingest data src to silver",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Insert in progress status",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
-								"secureOutput": false,
 								"secureInput": false
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "testtest",
-								"value": {
-									"value": "@item().table_id",
-									"type": "Expression"
+								"pipeline": {
+									"referenceName": "PL_Src_to_silver_Inner",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"table_id": {
+										"value": "@item().table_id",
+										"type": "Expression"
+									}
 								}
+							}
+						},
+						{
+							"name": "Insert in progress status",
+							"type": "Script",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 2,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "LS_caresyncazsqldb",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": {
+											"value": "Insert into ctrl.audit_log(adf_run_id,table_id,stage,status,start_time) values('a1',@{item().table_id},'source_to_silver','IN_PROGRESS',SYSUTCDATETIME());",
+											"type": "Expression"
+										}
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
 							}
 						}
 					]
