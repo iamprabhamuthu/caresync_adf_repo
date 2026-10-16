@@ -136,7 +136,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "update ctrl.audit_log\nSET\nstatus = 'FAILED', end_time = SYSUTCDATETIME()\nWhere 1=1\nand adf_run_id = @{pipeline().parameters.adf_run_id}\nand table_id = @{item().table_id}",
+											"value": "update ctrl.audit_log\nSET\nstatus = 'FAILED', end_time = SYSUTCDATETIME()\nWhere 1=1\nand adf_run_id = '@{pipeline().parameters.adf_run_id}'\nand table_id = @{item().table_id}",
 											"type": "Expression"
 										}
 									}
